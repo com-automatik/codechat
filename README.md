@@ -42,7 +42,7 @@ pm2 save && pm2 startup
 </details>
 
 <details>
-<summary>Instalação conector par Chatwoot</summary>
+<summary>Instalação conector para Chatwoot</summary>
 
 ```bash
 #Antes de inciar verifique se o node está instaldo, com o comando abaixo:
@@ -80,9 +80,10 @@ npm run build
 npm install pm2 -g
 pm2 start dist/app.js --name conector
 pm2 save && pm2 startup
+```
+Crie um  provider executando o seguinte código abaixo:
 
-# Crie um  provider executando o seguinte código abaixo:
-
+```bash
 curl --location 'http://localhost:1234/create-provider' \
 --header 'Content-Type: application/json' \
 --data '{
