@@ -17,7 +17,7 @@
 Está disponível [Git oficial API codechat ](https://github.com/code-chat-br/whatsapp-api).
 
 <details>
-  <summary>Instalação em pm2</summary>
+  <summary>Instalação da API usando pm2</summary>
   
   Acesse o terminal e execute os seguinte comandos:
   
@@ -39,8 +39,10 @@ npm install
 pm2 start 'npm run start prod' --name codechat
 pm2 save && pm2 startup
 ```
+</details>
 
-Instalação conector par Chatwoot
+<details>
+<summary>Instalação conector par Chatwoot</summary>
 
 ```bash
 #Antes de inciar verifique se o node está instaldo, com o comando abaixo:
