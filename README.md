@@ -14,79 +14,101 @@
 
 ## Documentação Original
 
-Está disponível [chatwoot.com/help-center](https://www.chatwoot.com/help-center).
+Está disponível [Git oficial API codechat ](https://github.com/code-chat-br/whatsapp-api).
 
 <details>
-  <summary>Atualização Manual (direta)</summary>
+  <summary>Instalação em pm2</summary>
   
   Acesse o terminal e execute os seguinte comandos:
   
   ```bash
-    cwctl --upgrade# Login as Chatwoot user
-    sudo -i -u chatwoot
+git clone https://github.com/code-chat-br/whatsapp-api.git codechta
+cd codechat/src
+mv dev-env.yml env.yml
+nano env.yml
 
-    # Navigate to the Chatwoot directory
-    cd chatwoot
+#Vá na linha 77 e 78, on tá <url> adicione a url abaixo e no campo ENABLED: deixe como true
+http://0.0.0.0:1234/webhook/codechat
 
-    # Pull the latest version of the master branch
-    git checkout master && git pull
-    
-    # Ensure the ruby version is upto date
-    rvm install "ruby-3.1.3"
-    rvm use 3.1. --default
+Ficará da seguinte forma:
+URL: http://0.0.0.0:1234/webhook/codechat
+ENABLED: true
 
-    # Update dependencies
-    bundle
-    yarn
+#Build codechat e incie o pm2
+npm install
+pm2 start 'npm run start prod' --name codechat
+pm2 save && pm2 startup
+```
 
-    # Recompile the assets
-    rake assets:precompile RAILS_ENV=production
+Instalação conector par Chatwoot
 
-    # Migrate the database schema
-    RAILS_ENV=production bundle exec rake db:migrate
+```bash
+#Antes de inciar verifique se o node está instaldo, com o comando abaixo:
+node -v
 
-    # Switch back to root user
-    exit
+#Se retonar alguma versão do node, pule para etapa de clonar o repositorio
 
-    # Reload systemd files
-    systemctl daemon-reload
+curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+sudo apt-get install -y nodejs
 
-    # Restart the chatwoot server
-    systemctl restart chatwoot.target
-  ``` 
+#Clone o repositório do conector
+git clone https://github.com/w3nder/chatwoot-codechat.git conector
 
-  Só use este abaixo se souber mexer como o git
-  ```bash
-    cwctl --upgrade# Login as Chatwoot user
-    sudo -i -u chatwoot
+cd conector
+mv .env.example .env
+nano .env
 
-    # Navigate to the Chatwoot directory
-    cd chatwoot
+#Copie e cole o seguinte código:
+PORT = 1234
+CHATWOOT_TOKEN = cN5uJp53qHMoE77DaUZNDrii
+CHATWOOT_BASE_URL = http://localhost:3000
 
-    # Pull the latest version of the master branch
-    git checkout develope && git pull
-    
-    # Ensure the ruby version is upto date
-    rvm install "ruby-3.1.3"
-    rvm use 3.1. --default
+CODECHAT_BASE_URL = http://localhost:8080
+CODECHAT_API_KEY = t8OOEeISKzpmc3jjcMqBWYSaJsafdefer
 
-    # Update dependencies
-    bundle
-    yarn
+# SE DESEJA ASSINAR A MENSAGEM COM O NOME DO USUÁRIO MUDE PARA true
+TOSIGN=true
 
-    # Recompile the assets
-    rake assets:precompile RAILS_ENV=production
+# SE DESEJA RECEBER MENSAGENS ENVIADAS POR FORA DO CHATWOOT MUDE PARA true
+IMPORT_MESSAGES_SENT=false
 
-    # Migrate the database schema
-    RAILS_ENV=production bundle exec rake db:migrate
+#Build seu conector e incie o pm2
+npm install
+npm run build
+npm install pm2 -g
+pm2 start dist/app.js --name conector
+pm2 save && pm2 startup
 
-    # Switch back to root user
-    exit
+# Crie um  provider executando o seguinte código abaixo:
 
-    # Reload systemd files
-    systemctl daemon-reload
+curl --location 'http://localhost:1234/create-provider' \
+--header 'Content-Type: application/json' \
+--data '{
+    "account_id": "idinboxcw",
+    "token": "tokencwperfil",
+    "url": "https://demo.dispzap.com",
+    "nameInbox": "nomesuacaixadeentrad"
+}'
+```
 
-    # Restart the chatwoot server
-    systemctl restart chatwoot.target
+Vai em seu chatwoot e realize as seguintes etepas:
+
+```bash
+Criar uma caixa de entrada com api
+URL: http://localhost:1234/webhook/chatwoot
+
+Criar um contato 
++123456
+
+Comandos extras:
+
+#Este comando irá criar uma nova instância e gerar um QR code
+/iniciar 
+
+#Este comando irá verificar o status da instância
+/status 
+
+#Este comando irá desconectar o WhatsApp da instância
+/desconectar
   ``` 
 </details>
