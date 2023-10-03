@@ -6,7 +6,7 @@
 
 # CODECHAT BRASIL
 
-[Grupo no Whatsapp](https://chat.whatsapp.com/CLKge3hmHmmBcIL04mBzmT)
+[Grupo no Whatsapp](https://chat.whatsapp.com/CwcSUOcgPBL6lJWYyvA0NS)
 <hr />
 
 [Grupo no Telegram](https://t.me/chatwootbrasil)
